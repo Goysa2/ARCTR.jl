@@ -1,4 +1,4 @@
-function solve_modelTRDiagAbs(PData :: PDataFact, δ:: Float64)
+function solve_modelTRDiagAbsNew(PData :: PDataFact, δ:: Float64)
     # Solve the TR subproblem once diagonalized into Δ using the norm |Δ|
     
 
@@ -13,8 +13,7 @@ function solve_modelTRDiagAbs(PData :: PDataFact, δ:: Float64)
     Γ2 = max(abs(PData.Δ),ϵ)
     Γ = sqrt(Γ2)
 
-    Δ̃ = Δ ./ Γ2    # Should be the (equivalent) Γ .\ Δ ./ Γ.
-                   # using Γ2 reduces numerical inacuracies from the sqrt.
+    Δ̃ = Γ .\ Δ ./ Γ
     g̃ = Γ .\ ḡ
 
     l_m,i = findmin(Δ̃)

@@ -38,7 +38,7 @@ function decreaseKARC(X :: PDataK, α:: Float64, TR:: TrustRegion)
 
     # fix α to its "ideal" value to satisfy αλ=||d||^τ
     # while ensuring α decreases enough
-    while α2 > targetα
+    while α2 > targetα && p_imin < X.nshifts
         X.indmin += 1
         p_imin = X.positives[X.indmin]
         α2 = X.norm_dirs[p_imin]^X.τ/X.shifts[p_imin]
@@ -47,5 +47,5 @@ function decreaseKARC(X :: PDataK, α:: Float64, TR:: TrustRegion)
     X.d = X.xShift[:,p_imin]
     X.λ = X.shifts[p_imin]
     
-    return α2
+    return α2, (p_imin >= X.nshifts)
 end

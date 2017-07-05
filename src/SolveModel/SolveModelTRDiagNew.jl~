@@ -1,7 +1,7 @@
-function solve_modelTRDiag(PData :: PDataFact, δ:: Float64)
+function solve_modelTRDiagNew(PData :: PDataFact, δ:: Float64)
     # Solve the TR subproblem once diagonalized into Δ using the L₂ norm
 
-    d̃,λ = MoreSorensonTR(PData.success, PData.Δ, PData.λ, PData.g̃, δ)
+    d̃,λ = MoreSorensonTR(PData.success, PData.Δ, PData.λ, PData.g̃, δ:: Float64)
 
     PData.λ = λ
 

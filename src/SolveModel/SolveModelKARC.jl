@@ -1,6 +1,6 @@
 function solve_modelKARC(X :: PDataK, α:: Float64)
     # target value should be close to satisfy αλ=||d||
-    target = [ ( abs( α*X.shifts[i] - X.norm_dirs[i]^X.τ) )   for i = 1 : X.nshifts ];    
+    target = [ ( abs( α*X.shifts[i] - X.norm_dirs[i]) )   for i = 1 : X.nshifts ];    
 
     # pick the closest shift to the target within positive definite H+λI
     X.indmin = max(1,X.indmin)

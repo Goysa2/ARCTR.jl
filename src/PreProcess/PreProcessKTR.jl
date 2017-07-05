@@ -37,7 +37,7 @@ function decreaseKTR(X :: PDataK, α:: Float64, TR:: TrustRegion)
     # while ensuring α decreases enough
     targetα = α*TR.decrease_factor
 
-    while α2 > targetα
+    while α2 > targetα && p_imin < X.nshifts
         X.indmin += 1
         p_imin = X.positives[X.indmin]
         α2 = X.norm_dirs[p_imin]
@@ -46,5 +46,5 @@ function decreaseKTR(X :: PDataK, α:: Float64, TR:: TrustRegion)
     X.d = X.xShift[:,p_imin]
     X.λ = X.shifts[p_imin]
     
-    return α2
+    return α2, (p_imin >= X.nshifts)
 end

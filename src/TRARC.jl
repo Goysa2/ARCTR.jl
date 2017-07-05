@@ -46,6 +46,8 @@ function TRARC(nlp :: AbstractNLPModel,
     optimal = (norm_g < atol) || (isinf(f) & (f<0.0))
     tired = false
     stalled = false
+    stalledK = false
+    unbounded = false
     finish = optimal || tired || stalled
     
     fnext = f
@@ -110,7 +112,7 @@ function TRARC(nlp :: AbstractNLPModel,
 	        unsuccinarow = unsuccinarow +1
                 stalled = unsuccinarow >= max_unsuccinarow
 	        try
-                    α = decrease(PData, α, TR)
+                    α, stalledK = decrease(PData, α, TR)
                 catch
                     stalled = true
                 end
@@ -134,7 +136,7 @@ function TRARC(nlp :: AbstractNLPModel,
                     verysucc += 1
 	        else
                     if r < TR.reduce_threshold
-                        α = decrease(PData, α, TR)
+                        α, stalledK = decrease(PData, α, TR)
                     end
 	            verbose && display_success(iter,f,norm_g,λ,α)
 	            succ += 1
@@ -157,7 +159,7 @@ function TRARC(nlp :: AbstractNLPModel,
 
 
 
-        finish = (optimal || tired || stalled)
+        finish = (optimal || tired || stalled || stalledK)
     end
     
     xopt = x
@@ -184,9 +186,11 @@ function TRARC(nlp :: AbstractNLPModel,
         @printf("\n     Final cost(x) = %f  ||g|| = %9.2e  \#f/g/H evals  = %i  NOT converged\n\n",fopt, norm(gopt),total_calls)
     end;  
     
-    if OK status = :Optimal
-    elseif stalled status = :stalled
-    else status = :UserLimit
+    if     optimal   status = :Optimal
+    elseif stalled   status = :Stalled
+    elseif stalledK  status = :StalledKrylov
+    elseif unbounded status = :Unbounded
+    else             status = :UserLimit
     end
     
     return xopt,fopt,norm_g,norm(gopt),niter,calls,OK,status
