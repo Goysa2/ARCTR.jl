@@ -2,7 +2,7 @@
 function TRARCS(nlp :: AbstractNLPModel,
                 x₀ :: Array{Float64,1},
                 TR :: TrustRegion, c :: Combi;
-                s :: TStopping = TStopping(),
+                stp :: TStopping = TStopping(),
                 robust :: Bool = true,
                 verbose :: Bool = true,
                 kwargs...
@@ -10,9 +10,8 @@ function TRARCS(nlp :: AbstractNLPModel,
 
     hessian_rep,PData,solve_model,pre_process,decrease,params = extract(c)
 
-    StopNorm = s.optimality_residual
+    StopNorm = stp.optimality_residual
      
-    s = start!(nlp,s,x₀)
 
     α = TR.α₀
     x, xnext, d, Df = copy(x₀), copy(x₀), copy(x₀), 0.0
@@ -20,7 +19,8 @@ function TRARCS(nlp :: AbstractNLPModel,
     λ = 1.0
     
     n = length(x)
-    ∇f = Array(Float64,n)
+    stp, ∇f = start!(nlp, stp, x₀)
+    #∇f = Array(Float64,n)
     ∇fnext = Array(Float64,n)    
     
     f = obj(nlp,x)
@@ -36,7 +36,7 @@ function TRARCS(nlp :: AbstractNLPModel,
     end
 
     fopt = f
-    grad!(nlp,x,∇f)
+    #grad!(nlp,x,∇f)
     norm_∇f = stop_norm(∇f)
     norm_∇f0 = norm_∇f
     ∇fopt = ∇f
@@ -49,7 +49,7 @@ function TRARCS(nlp :: AbstractNLPModel,
     fnext = f
     iter = 0
 
-    optimal, unbounded, tired, elapsed_time = stop(nlp, s,iter,x,f,∇f)
+    optimal, unbounded, tired, elapsed_time = stop(nlp, stp,iter,x,f,∇f)
     stalled = false
     stalledK = false
     unbounded = false
@@ -66,7 +66,7 @@ function TRARCS(nlp :: AbstractNLPModel,
     
     while ~finish
 
-        PData = pre_process(H,∇f,params,calls,s.max_eval)
+        PData = pre_process(H,∇f,params,calls,stp.max_eval)
 #                println("===>>> cond(H) = $(cond(H))  cond(L) = $(cond(PData.L))")
 #                println(" ||H - P'LDL'P|| = $(norm(H - PData.P'*PData.L*PData.D*PData.L'*PData.P))")
         #if cond(PData.L) > 10000.0*cond(H) println("===>>> cond(H) = $(cond(H))  cond(L) = $(cond(PData.L))")
@@ -76,7 +76,7 @@ function TRARCS(nlp :: AbstractNLPModel,
         
         success = false
         
-        while ~success & (iter < s.max_iter) & (unsuccinarow < TR.max_unsuccinarow)
+        while ~success & (iter < stp.max_iter) & (unsuccinarow < TR.max_unsuccinarow)
             try
                 d,λ = solve_model(PData,α)
             catch
@@ -128,7 +128,7 @@ function TRARCS(nlp :: AbstractNLPModel,
 	        unsucc=unsucc+1
 	        unsuccinarow = unsuccinarow +1
 	        α, stalledK = decrease(PData, α, TR)
-                fbidon = obj(nlp,x)
+                #fbidon = obj(nlp,x)
 	    else
 	        success = true
                 
@@ -166,7 +166,7 @@ function TRARCS(nlp :: AbstractNLPModel,
         end
         calls = [nlp.counters.neval_obj,  nlp.counters.neval_grad, nlp.counters.neval_hess, nlp.counters.neval_hprod]
 
-        optimal, unbounded, tired, elapsed_time = stop(nlp, s, iter, x, f, ∇f)
+        optimal, unbounded, tired, elapsed_time = stop(nlp, stp, iter, x, f, ∇f)
         #optimal = (norm_g < atol)| (norm_g <( rtol * norm_g0)) | (isinf(f) & (f<0.0))
         #tired = (iter >= itmax) | (sum(calls) > max_calls)
         stalled = unsuccinarow >= max_unsuccinarow

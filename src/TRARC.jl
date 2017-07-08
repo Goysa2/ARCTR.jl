@@ -39,7 +39,7 @@ function TRARC(nlp :: AbstractNLPModel,
     fopt = f
     grad!(nlp,x,g)
     norm_g = stop_norm(g)
-    norm_g0 = norm(g)
+    norm_g0 = stop_norm(g)
     gopt = g
     H = hessian_rep(nlp,x)
     
