@@ -83,30 +83,5 @@ include("ST_ARCdense.jl")
 push!(ALL_solvers,eval(fname))
 
 
+#include("HSLsolvers.jl")
 
-include("ARCMA97.jl")
-push!(ALL_solvers,eval(fname))
-
-include("ARCMA97_abs.jl")
-push!(ALL_solvers,eval(fname))
-
-include("TRMA97.jl")
-push!(ALL_solvers,eval(fname))
-
-include("TRMA97_abs.jl")
-push!(ALL_solvers,eval(fname))
-
-
-
-
-include("ARCMA57.jl")
-push!(ALL_solvers,eval(fname))
-
-include("ARCMA57_abs.jl")
-push!(ALL_solvers,eval(fname))
-
-include("TRMA57.jl")
-push!(ALL_solvers,eval(fname))
-
-include("TRMA57_abs.jl")
-push!(ALL_solvers,eval(fname))

@@ -1,10 +1,10 @@
-abstract TPData  # Ancestor of all PreProcess data
+abstract type TPData end  # Ancestor of all PreProcess data
 
-abstract PDataFact <: TPData  # Variants using matricial factorization
+abstract type PDataFact <: TPData  end  # Variants using matricial factorization
 
-abstract PDataIter <: TPData  # Variants using iterative (Krylov) solvers
+abstract type PDataIter <: TPData end # Variants using iterative (Krylov) solvers
 
-abstract Tparams  # Ancestor of variant specific parameters
+abstract type Tparams  end # Ancestor of variant specific parameters
 
 type Tparam <: Tparams
 end

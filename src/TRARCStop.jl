@@ -21,7 +21,7 @@ function TRARCS(nlp :: AbstractNLPModel,
     n = length(x)
     stp, ∇f = start!(nlp, stp, x₀)
     #∇f = Array(Float64,n)
-    ∇fnext = Array(Float64,n)    
+    ∇fnext = Array{Float64}(n)    
     
     f = obj(nlp,x)
     if isnan(f) | (f==Inf)
