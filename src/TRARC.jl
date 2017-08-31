@@ -21,8 +21,8 @@ function TRARC(nlp :: AbstractNLPModel,
     λ = 1.0
     
     n = length(x)
-    g = Array(Float64,n)
-    gnext = Array(Float64,n)    
+    g = Array{Float64}(n)
+    gnext = Array{Float64}(n)    
     
     f = obj(nlp,x)
     if isnan(f) | (f==Inf)
