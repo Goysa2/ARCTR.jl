@@ -10,8 +10,8 @@ function solve_modelTRDiagAbs(PData :: PDataFact, δ:: Float64)
 
     ϵ =  1.0e-10 # *n_g
 
-    Γ2 = max(abs(PData.Δ),ϵ)
-    Γ = sqrt(Γ2)
+    Γ2 = max.(abs.(PData.Δ),ϵ)
+    Γ = sqrt.(Γ2)
 
     Δ̃ = Δ ./ Γ2    # Should be the (equivalent) Γ .\ Δ ./ Γ.
                    # using Γ2 reduces numerical inacuracies from the sqrt.

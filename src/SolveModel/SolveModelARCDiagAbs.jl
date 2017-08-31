@@ -12,8 +12,8 @@ function solve_modelARCDiagAbs(PData :: PDataFact, α:: Float64)
 
     n_g = norm(ḡ)
     ϵ =  1.0e-10 
-    Γ2 = max(abs(PData.Δ),ϵ)
-    Γ = sqrt(Γ2)
+    Γ2 = max.(abs.(PData.Δ),ϵ)
+    Γ = sqrt.(Γ2)
 
     Δ̃ = Δ ./ Γ2    # Should be the (equivalent) Γ .\ Δ ./ Γ.
                    # using Γ2 reduces numerical inacuracies from the sqrt.
