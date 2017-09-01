@@ -1,7 +1,7 @@
 function preprocessLDLt(H ,g, params::Tparams,n1,n2)
-    L = Array(Float64,2)
-    D = Array(Float64,2)
-    pp = Array(Int,1)
+    L = Array{Float64}(2)
+    D = Array{Float64}(2)
+    pp = Array{Int}(1)
     ρ = Float64
     ncomp = Int64
     
@@ -14,7 +14,7 @@ function preprocessLDLt(H ,g, params::Tparams,n1,n2)
         return res
     end
 
-    if true in isnan(D) 
+    if true in isnan.(D) 
  	println("*******   Problem in D from LDLt: NaN")
         println(" cond (H) = $(cond(H))")
         res = PDataLDLt()

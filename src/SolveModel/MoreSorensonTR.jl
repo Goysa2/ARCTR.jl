@@ -8,7 +8,7 @@ function MoreSorensonTR(success, Δ, λIn, g̃, δ:: Float64; M=[0.0])
     # Min < 0.0  && println("Assertion failed MoreSorensonTR:  minimum(Δ + λIn*M) = $Min")
     ϵ = 1.0e-10# * (1.0 + λIn)
 
-    if success # take care of eventual hard case and Newton's direction interior (λ=0)
+#    if success # take care of eventual hard case and Newton's direction interior (λ=0)
         # (PData.Δ+PData.λ*M) ⪰ 0
         λ = max(ϵ, λIn + ϵ * (1.0 + λIn)) # to make sure (Δ+λ*M) ≻ 0
         
@@ -27,13 +27,13 @@ function MoreSorensonTR(success, Δ, λIn, g̃, δ:: Float64; M=[0.0])
         else
             d̃,λ = solve_diagTR(λ,Δ,g̃,δ,ϵ,M=M)
         end      
-    else
+#    else
         # hard case should not occurr if δ reduction is sufficient. If not, Newton's direction
         # may be tried in solve_diagTR and by luck, improve the convergence. Otherwise, after
         # a sufficient decrease of δ, a direction on the boundary will be computed.
         # Solve the subproblem (Δ + λ I) d̃ = -g̃ such that ||d̃|| = δ
-        d̃,λ = solve_diagTR(λIn,Δ,g̃,δ,ϵ,M=M)
-    end
+#        d̃,λ = solve_diagTR(λ,Δ,g̃,δ,ϵ,M=M)
+#    end
 
     return d̃, λ
 end

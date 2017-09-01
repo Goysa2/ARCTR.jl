@@ -77,13 +77,13 @@ function TRARCS(nlp :: AbstractNLPModel,
         success = false
         
         while ~success & (iter < stp.max_iter) & (unsuccinarow < TR.max_unsuccinarow)
-            try
+            #try
                 d,λ = solve_model(PData,α)
-            catch
-                println(" Problem in solve_model")
+            #catch
+            #    println(" Problem in solve_model")
 
-                return x,fopt,norm_∇f,norm_∇fopt,iter,calls,false,:AscentDir
-            end
+            #    return x,fopt,norm_∇f,norm_∇fopt,iter,calls,false,:AscentDir
+            #end
             #println("******* TRARC:  g⋅d = $(g⋅d), 0.5 d'*H*d = $(0.5*(H * d)⋅d)")
 
             Δq = -(∇f + 0.5*H*d)⋅d
