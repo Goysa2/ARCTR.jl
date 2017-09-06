@@ -69,13 +69,13 @@ function TRARC(nlp :: AbstractNLPModel,
         
 #        while ~success & (iter < max_iter) & (unsuccinarow < TR.max_unsuccinarow)
         while ~success & (iter < max_iter) & (~stalled)
-            try
+            #try
                 d,λ = solve_model(PData,α)
-            catch
-                println(" Problem in solve_model")
+            #catch
+            #    println(" Problem in solve_model")
 
-                return x,fopt,norm_g,norm(gopt),iter,calls,false,:AscentDir
-            end
+            #    return x,fopt,norm_g,norm(gopt),iter,calls,false,:AscentDir
+            #end
 
             Δq = -(g + 0.5*H*d)⋅d
 

@@ -46,6 +46,7 @@ We assume that q is being minimized, and therefore that Δq > 0.
 function compute_r(nlp,f,Δf,Δq,slope,d,xnext,gnext,robust)
     # If ever the next gradient is computed for round off errors reason, signal it.
     good_grad = false
+    Δf2 = Δf
     if robust & ((Δq < 10000*eps()) | (abs(Δf)<10000*eps()*abs(f)) )
         # trap potential cancellation errors
         grad!(nlp,xnext,gnext);
@@ -53,6 +54,8 @@ function compute_r(nlp,f,Δf,Δq,slope,d,xnext,gnext,robust)
         slope_next = dot(gnext,d)
         
         Δf = -(slope_next+slope)/2.0
+        #@printf("\n%-16s  %9.2e  %5s  %9.2e  %7s %19.12e   %15s  %19.12e  %7s  %9.2e  %4s %1.2e ",
+        #    "f - f+ = ", Δf2, "Formula 2 = ",Δf, "ratio = ", Δf2/Δq,"ratio form(2) = ",Δf/Δq, "||d|| = ",norm(d), " f = ",f )
     end
     r = Δf/Δq
     if isnan(r) r=0.0;end;

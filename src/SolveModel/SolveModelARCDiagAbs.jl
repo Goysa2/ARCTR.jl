@@ -8,26 +8,29 @@ function solve_modelARCDiagAbs(PData :: PDataFact, α:: Float64)
     # TO TEST to confirm it avoids ascent directions
     #
     ḡ = PData.g̃
+    Δ = PData.Δ
+
     n_g = norm(ḡ)
     ϵ =  1.0e-10 
     Γ2 = max(abs(PData.Δ),ϵ)
     Γ = sqrt(Γ2)
 
-    Δ̄ = Γ .\ PData.Δ ./ Γ
-    Δ = PData.Δ
+    Δ̃ = Δ ./ Γ2    # Should be the (equivalent) Γ .\ Δ ./ Γ.
+                   # using Γ2 reduces numerical inacuracies from the sqrt.
+
     λmin = 0.0 #  Test the following
     if PData.success # ensure 
-        l_m, = findmin(Δ̄)
+        l_m, = findmin(Δ̃)
         λ = max(-l_m,0.0)
         λmin = max(ϵ,  λ + ϵ * (1.0 + λ)) 
     else
         λmin = PData.λ
     end
     d̄ = -(Δ + λmin*Γ2) .\ ḡ
-    seuil_bar = norm(d̄)/α
+    seuil_bar = norm(Γ .* d̄)/α
 
 
-    # Solve the subproblem (Δ̄ + λ I) d̄ = -ḡ such that λ = ||d̄||/α
+    # Solve the subproblem (Δ̄ + λ I) d̄ = -ḡ such that λ = ||d̄||/α in the Γ2 induced norm
     d̄,λ = solve_diag(λmin,Δ,ḡ,seuil_bar,α,ϵ, M=Γ2)
 
     # Transform back d_s into d

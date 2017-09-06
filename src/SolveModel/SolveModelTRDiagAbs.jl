@@ -19,12 +19,13 @@ function solve_modelTRDiagAbs(PData :: PDataFact, δ:: Float64)
         λmin = max(ϵ,  λ + ϵ * (1.0 + λ)) #λ + ϵ #max(λ*(1+ϵ), ϵ)
 
         d̄ = -(Δ+λmin*Γ2) .\ ḡ
-        normd_s = sqrt(d̄⋅d̄)
+        normd_2 = (d̄⋅ (Γ2 .\ d̄))
         #if isnan(normd_s)  @bp end
-        if normd_s < δ
+        if normd_2 < δ*δ
             if λ != 0.0  # λ == 0 is Newton's direction, nothing to do...
-                #println(" hard case")
-                d̄[i] =0.0; d̄[i] = - sign(PData.g̃[i]) * sqrt(δ^2 - d̄⋅d̄)
+                println(" hard case")
+                #bidon, i = findmin(Δ)
+                d̄[i] =0.0; d̄[i] = - sign(PData.g̃[i]) * sqrt(δ^2 - normd_2)
             end
         else
             #println(" easy case normd_s = $normd_s")
