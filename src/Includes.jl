@@ -41,12 +41,9 @@ include("./PreProcess/PreProcessST_TR.jl")
 ################################################################################
 # Functions needed for high order corrections
 ################################################################################
-# include("./SolveModel/SolveModelTRDiag-HO.jl")
-# include("./SolveModel/SolveModelTRDiag-HO-lambda.jl")
 include("./SolveModel/high-order-correction/shamanskii.jl")
 include("./SolveModel/high-order-correction/shamanskii-lambda.jl")
-# include("./SolveModel/high-order-correction/shamanskii-ma57.jl")
-# include("./SolveModel/high-order-correction/shamanskii-ma57-bfgs.jl")
+include("./SolveModel/high-order-correction/shamanskii-ma57.jl")
 include("./SolveModel/high-order-correction/shamanskii-bfgs.jl")
 include("./SolveModel/high-order-correction/chebyshev.jl")
 include("./SolveModel/high-order-correction/halley.jl")

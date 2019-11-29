@@ -92,21 +92,21 @@ push!(ALL_solvers, ST_ARCdense)
 #
 # include("TRMA97_abs.jl")
 # push!(ALL_solvers, TRMA97_abs)
-#
-# include("ARCMA57.jl")
-# push!(ALL_solvers, ARCMA57)
-#
-# include("ARCMA57_Sham_vs_Nwt_lambda.jl")
-# push!(ALL_solvers, ARCMA57_Sham_vs_Nwt_λ)
-#
-# include("ARCMA57_abs.jl")
-# push!(ALL_solvers, ARCMA57_abs)
-#
-# include("TRMA57.jl")
-# push!(ALL_solvers, TRMA57)
-#
-# include("TRMA57_Sham_vs_Nwt_lambda.jl")
-# push!(ALL_solvers, TRMA57_Sham_vs_Nwt_λ)
-#
-# include("TRMA57_abs.jl")
-# push!(ALL_solvers, TRMA57_abs)
+
+include("ARCMA57.jl")
+push!(ALL_solvers, ARCMA57)
+
+include("ARCMA57_Sham_vs_Nwt_lambda.jl")
+push!(ALL_solvers, ARCMA57_Sham_vs_Nwt_λ)
+
+include("ARCMA57_abs.jl")
+push!(ALL_solvers, ARCMA57_abs)
+
+include("TRMA57.jl")
+push!(ALL_solvers, TRMA57)
+
+include("TRMA57_Sham_vs_Nwt_lambda.jl")
+push!(ALL_solvers, TRMA57_Sham_vs_Nwt_λ)
+
+include("TRMA57_abs.jl")
+push!(ALL_solvers, TRMA57_abs)
